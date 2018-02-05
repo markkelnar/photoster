@@ -1,4 +1,7 @@
-#!/usr/bin/env python3
+# Given image file name, get the exif meta data create date
+# Construct a folder name from that create date
+# Get md5 hash of file contents
+# Use file writer class to write the file to destination based on date
 
 import PIL.Image
 from PIL.ExifTags import TAGS
@@ -37,3 +40,5 @@ class Image:
     @staticmethod
     def get_folder_from_date(d):
         return d.strftime("%Y_%m_%d")
+
+    def 
