@@ -7,7 +7,9 @@
 # if image
 # get image meta data
 
-from pathlib import Path
+from image import Image
 
-p = Path('.')
-[x for x in p.iterdir() if x.is_dir()]
+print("Hello you")
+
+img = Image('./IMG_8622.JPG')
+img.process()
