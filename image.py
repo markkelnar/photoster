@@ -5,7 +5,6 @@
 
 import PIL.Image
 from PIL.ExifTags import TAGS
-from pprint import pprint
 import datetime
 import hashlib
 import re
@@ -25,14 +24,19 @@ class Image:
         time = self.DEFAULT_DATE_UNKNOWN
         try:
             exif = self.get_exif(self.filename)
-            time = exif['DateTimeOriginal']
             self.counter['IMAGE'] += 1
         except OSError as e:
             # Not an image
-            time = self.get_time_from_path(self.filename)
             self.counter['NOT_IMAGE'] += 1
-        finally:
-            pass
+        except Exception as e:
+            self.counter['NO_IMAGE_INFO'] += 1            
+
+        try:
+            if not time:
+                time = self.get_time_from_path(self.filename)
+        except Exception as e:
+            time = exif['DateTimeOriginal']
+
         return self.get_origin_date(time=time)
 
     def get_exif(self, fn):
@@ -41,14 +45,14 @@ class Image:
         info = img._getexif()
         # Handle images where no info found
         if not info:
-            info = {}
-            info['DateTimeOriginal'] = self.DEFAULT_DATE_IMAGE
-            self.counter['NO_IMAGE_INFO'] += 1
+            raise Exception('No image info')
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
-            if 'MakerNote' == decoded:
+            if 'DateTimeOriginal' != decoded:
                 continue
             ret[decoded] = value
+        if 'DateTimeOriginal' not in ret:
+            raise Exception('No image DateTimeOriginal')
         return ret
 
     # 'DateTimeOriginal': '2016:09:03 17:47:51'
@@ -74,4 +78,5 @@ class Image:
         match = re.search('(\d\d\d\d)\/(\d\d)\/(\d\d)', filename)
         if match:
             time = "{}:{}:{} 03:03:03".format(match.group(1), match.group(2), match.group(3))
-        return time
+            return time
+        raise Exception('No time from path')
