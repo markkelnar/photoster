@@ -1,22 +1,27 @@
+# How the image file is writen to the destination directory
+# Construct a folder name from that create date
+
 import datetime
 import os
 
 class Writer:
     BASE_DIR_OUT = '/p.out/'
 
-    def __init__(self, filename, date):
-        self.filename = filename
-        self.date = date
+    hashes = {}
 
-    # get dest directory of file
-    # make sure it exists
-    # move file there, maintaining mod date
-    def process(self):
-        directory = self.format_date_for_directory_name(self.date)
-        directory = self.BASE_DIR_OUT + directory
-        print("Directory {}".format(directory))
-        #self.create_directory(directory)
-        #self.move(directory, self.filename)
+    # Get dest directory of file
+    # Make sure it exists
+    # Move file there, maintaining mod date
+    def process(self, image):
+        image_date = image.get_create_date()
+        image_dir = self.format_date_for_directory_name(image_date)
+        image_dir = self.BASE_DIR_OUT + image_dir
+        print("Directory {}".format(image_dir))
+        rc = self.do_file_hash(image)
+        print("hash exists {}".format(rc))
+        #self.create_directory(image_dir)
+        #self.move(image_dir, self.image.filename)
+        print(self.hashes)
 
     # Given timestamp, determine the directory destination name
     # Folder name format based on date: 2017/01/01
@@ -37,3 +42,11 @@ class Writer:
         if not os.path.exists(dest):
             print("File destination ".dest)
             os.rename(filename, dest)
+
+    # Does the file hash exist in our list of files?
+    def do_file_hash(self, image):
+        # look for the hash in our list of hashes
+        if image.hash in self.hashes:
+            return True
+        self.hashes[image.hash] = image.filename
+        return False
