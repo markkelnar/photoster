@@ -8,8 +8,14 @@
 # get image meta data
 
 from image import Image
+from writer import Writer
 
 print("Hello you")
 
-img = Image('./IMG_8622.JPG')
-img.process()
+file = '/p.in/IMG_8622.JPG'
+img = Image(file)
+d = img.get_create_date()
+print("Image date {}".format(d))
+
+writer = Writer(file, d)
+writer.process()

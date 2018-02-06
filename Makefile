@@ -15,3 +15,5 @@ docker_test_unit:
 
 run:
 	docker run -it --rm --name ${DOCKER_NAME} run.py
+
+#	docker run --rm -v ${PWD}/:/workspace/ -v ~/pics.in:/p.in -v ~/pics.out:/p.out photoster ./run.py

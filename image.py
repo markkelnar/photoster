@@ -13,10 +13,9 @@ class Image:
         print(filename)
         self.filename = filename
 
-    def process(self):
+    def get_create_date(self):
         exif = self.get_exif(self.filename)
-        datetime = self.get_origin_date(exif)
-        folder_name = self.get_folder_from_date(datetime)
+        return self.get_origin_date(exif)
 
     @staticmethod
     def get_exif(fn):
@@ -35,10 +34,3 @@ class Image:
     def get_origin_date(info):
         t = info['DateTimeOriginal']
         return datetime.datetime.strptime(t, "%Y:%m:%d %H:%M:%S")
-
-    # Folder name format based on date: 2017_01_01
-    @staticmethod
-    def get_folder_from_date(d):
-        return d.strftime("%Y_%m_%d")
-
-    def 
