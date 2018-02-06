@@ -8,25 +8,42 @@ from PIL.ExifTags import TAGS
 from pprint import pprint
 import datetime
 import hashlib
+import re
 
 class Image:
     BLOCKSIZE = 65536
+    DEFAULT_DATE_UNKNOWN = '1950:01:01 01:01:01'
+    DEFAULT_DATE_IMAGE = '1951:01:01 02:02:02'
 
     hash = ''
 
-
-    def __init__(self, filename):
+    def __init__(self, counter, filename):
+        self.counter = counter
         self.filename = filename
 
     def get_create_date(self):
-        exif = self.get_exif(self.filename)
-        return self.get_origin_date(exif)
+        time = self.DEFAULT_DATE_UNKNOWN
+        try:
+            exif = self.get_exif(self.filename)
+            time = exif['DateTimeOriginal']
+            self.counter['IMAGE'] += 1
+        except OSError as e:
+            # Not an image
+            time = self.get_time_from_path(self.filename)
+            self.counter['NOT_IMAGE'] += 1
+        finally:
+            pass
+        return self.get_origin_date(time=time)
 
-    @staticmethod
-    def get_exif(fn):
+    def get_exif(self, fn):
         ret = {}
         img = PIL.Image.open(fn)
         info = img._getexif()
+        # Handle images where no info found
+        if not info:
+            info = {}
+            info['DateTimeOriginal'] = self.DEFAULT_DATE_IMAGE
+            self.counter['NO_IMAGE_INFO'] += 1
         for tag, value in info.items():
             decoded = TAGS.get(tag, tag)
             if 'MakerNote' == decoded:
@@ -36,9 +53,8 @@ class Image:
 
     # 'DateTimeOriginal': '2016:09:03 17:47:51'
     @staticmethod
-    def get_origin_date(info):
-        t = info['DateTimeOriginal']
-        return datetime.datetime.strptime(t, "%Y:%m:%d %H:%M:%S")
+    def get_origin_date(time):
+        return datetime.datetime.strptime(time, "%Y:%m:%d %H:%M:%S")
 
     def get_hash(self):
         if self.hash:
@@ -51,3 +67,11 @@ class Image:
                 buf = afile.read(self.BLOCKSIZE)
         self.hash = hasher.hexdigest()
         return self.hash
+
+    # If can't get image file info, because it doesn't have it or it's a video file,
+    # See if the file name has a date in the path, like DDDD/DD/DD or YYYY/MM/DD
+    def get_time_from_path(self, filename):
+        match = re.search('(\d\d\d\d)\/(\d\d)\/(\d\d)', filename)
+        if match:
+            time = "{}:{}:{} 03:03:03".format(match.group(1), match.group(2), match.group(3))
+        return time
