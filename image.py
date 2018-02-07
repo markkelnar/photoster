@@ -21,9 +21,10 @@ class Image:
         self.filename = filename
 
     def get_create_date(self):
-        time = self.DEFAULT_DATE_UNKNOWN
+        time = None
         try:
             exif = self.get_exif(self.filename)
+            time = exif['DateTimeOriginal']
             self.counter['IMAGE'] += 1
         except OSError as e:
             # Not an image
@@ -35,8 +36,7 @@ class Image:
             if not time:
                 time = self.get_time_from_path(self.filename)
         except Exception as e:
-            time = exif['DateTimeOriginal']
-
+            time = self.DEFAULT_DATE_UNKNOWN
         return self.get_origin_date(time=time)
 
     def get_exif(self, fn):

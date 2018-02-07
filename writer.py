@@ -4,9 +4,11 @@
 import datetime
 import os
 import shutil
+from image import Image
 
 class Writer:
     BASE_DIR_OUT = '/p.out/'
+    BASE_PROBLEM_DIR = BASE_DIR_OUT+'_problems/'
 
     hashes = {}
 
@@ -24,7 +26,7 @@ class Writer:
         #print("Directory {}".format(image_dir))
         rc = self.do_file_hash(image)
         self.create_directory(image_dir)
-        self.move(image_dir, image.filename)
+        self.move(image_dir, image)
         self.counter['HASH'] += 1
 
     # Given timestamp, determine the directory destination name
@@ -41,13 +43,19 @@ class Writer:
             self.counter['DIR_CREATE'] += 1
 
     # Given file name, move to the directory destination
-    def move(self, directory, filename):
-        dest = "{}/{}".format(directory, os.path.basename(filename))
+    def move(self, directory, image):
+        dest = "{}/{}".format(directory, os.path.basename(image.filename))
+        # If dest exists, does hash match this file?
+        if os.path.exists(dest):
+            dest_image = Image(counter=self.counter, filename=dest)
+            if dest_image.get_hash() != image.get_hash():
+                # We have a file conflict.  We'll need to kick this file out and try again or rename it
+                dest = "{}/{}".format(BASE_PROBLEM_DIR, image.filename)
         if not os.path.exists(dest):
-            print("File destination {} + {} -> {}".format(directory, filename, dest))
+            print("File destination {} + {} -> {}".format(directory, image.filename, dest))
             #os.rename(filename, dest)
-            shutil.copyfile(filename, dest)
-            shutil.copystat(filename, dest)
+            shutil.copyfile(image.filename, dest)
+            shutil.copystat(image.filename, dest)
             self.counter['COPY'] += 1
 
     # Does the file hash exist in our list of files?
