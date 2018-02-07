@@ -14,7 +14,16 @@ from collections import Counter
 
 print("Process images")
 
-counting = ['FILES', 'COPY', 'HASH', 'DIR_CREATE', 'IMAGE', 'NOT_IMAGE', 'NO_IMAGE_INFO']
+counting = ['FILES', 
+    'COPY', 
+    'HASH', 
+    'DIR_CREATE', 
+    'IMAGE', 
+    'NOT_IMAGE', 
+    'NO_IMAGE_INFO', 
+    'TIME_FROM_PATH', 
+    'TIME_FROM_MOD'
+    ]
 counter = Counter()
 writer = Writer(counter=counter)
 

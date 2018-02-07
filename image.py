@@ -8,6 +8,7 @@ from PIL.ExifTags import TAGS
 import datetime
 import hashlib
 import re
+import os
 
 class Image:
     BLOCKSIZE = 65536
@@ -36,7 +37,7 @@ class Image:
             if not time:
                 time = self.get_time_from_path(self.filename)
         except Exception as e:
-            time = self.DEFAULT_DATE_UNKNOWN
+            time = self.get_time_from_mod_time(self.filename)
         return self.get_origin_date(time=time)
 
     def get_exif(self, fn):
@@ -80,3 +81,8 @@ class Image:
             time = "{}:{}:{} 03:03:03".format(match.group(1), match.group(2), match.group(3))
             return time
         raise Exception('No time from path')
+
+    @staticmethod
+    def get_time_from_mod_time(filename):
+        time = os.path.getmtime(filename)
+        return datetime.datetime.utcfromtimestamp(time).strftime('%Y:%m:%d %H:%M:%S')

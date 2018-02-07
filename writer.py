@@ -50,7 +50,7 @@ class Writer:
             dest_image = Image(counter=self.counter, filename=dest)
             if dest_image.get_hash() != image.get_hash():
                 # We have a file conflict.  We'll need to kick this file out and try again or rename it
-                dest = "{}/{}".format(BASE_PROBLEM_DIR, image.filename)
+                dest = "{}/{}".format(self.BASE_PROBLEM_DIR, image.filename)
         if not os.path.exists(dest):
             print("File destination {} + {} -> {}".format(directory, image.filename, dest))
             #os.rename(filename, dest)
