@@ -10,6 +10,9 @@ import hashlib
 import re
 import os
 
+import pyexifinfo
+
+
 class Image:
     BLOCKSIZE = 65536
     DEFAULT_DATE_UNKNOWN = '1950:01:01 01:01:01'
@@ -24,9 +27,8 @@ class Image:
     def get_create_date(self):
         time = None
         try:
-            exif = self.get_exif(self.filename)
-            time = exif['DateTimeOriginal']
-            self.counter['IMAGE'] += 1
+            time = self.get_date_from_exif(self.filename)
+            self.counter['TIME_FROM_EXIF'] += 1
         except OSError as e:
             # Not an image
             self.counter['NOT_IMAGE'] += 1
@@ -36,29 +38,25 @@ class Image:
         try:
             if not time:
                 time = self.get_time_from_path(self.filename)
+                self.counter['TIME_FROM_PATH'] += 1
         except Exception as e:
             time = self.get_time_from_mod_time(self.filename)
-        return self.get_origin_date(time=time)
+            self.counter['TIME_FROM_MOD'] += 1
+        return self.format_create_date(time=time)
 
-    def get_exif(self, fn):
-        ret = {}
-        img = PIL.Image.open(fn)
-        info = img._getexif()
-        # Handle images where no info found
-        if not info:
-            raise Exception('No image info')
-        for tag, value in info.items():
-            decoded = TAGS.get(tag, tag)
-            if 'DateTimeOriginal' != decoded:
-                continue
-            ret[decoded] = value
-        if 'DateTimeOriginal' not in ret:
-            raise Exception('No image DateTimeOriginal')
-        return ret
+    def get_date_from_exif(self, fn):
+        self.counter['FILE_TYPE_'+pyexifinfo.fileType(fn)] += 1
+        d = pyexifinfo.get_json(fn)[0]
+        # 'EXIF:DateTimeOriginal': '2016:09:06 19:34:07'
+        # 'QuickTime:CreateDate': '2016:09:05 13:11:08'
+        if 'EXIF:DateTimeOriginal' in d:
+            return d['EXIF:DateTimeOriginal']
+        if 'QuickTime:CreateDate' in d:
+            return d['QuickTime:CreateDate']
 
-    # 'DateTimeOriginal': '2016:09:03 17:47:51'
+    # @param time '2016:09:03 17:47:51'
     @staticmethod
-    def get_origin_date(time):
+    def format_create_date(time):
         return datetime.datetime.strptime(time, "%Y:%m:%d %H:%M:%S")
 
     def get_hash(self):

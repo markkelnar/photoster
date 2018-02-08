@@ -12,6 +12,8 @@ class Writer:
 
     hashes = {}
 
+    recent_date = ''
+
     def __init__(self, counter):
         self.counter = counter
 
@@ -19,8 +21,10 @@ class Writer:
     # Make sure it exists
     # Move file there, maintaining mod date
     def process(self, image):
+        #print('.', end='', flush=True)
         self.counter['FILES'] += 1
         image_date = image.get_create_date()
+        self.recent_date = image_date
         image_dir = self.format_date_for_directory_name(image_date)
         image_dir = self.BASE_DIR_OUT + image_dir
         #print("Directory {}".format(image_dir))
@@ -39,7 +43,7 @@ class Writer:
     def create_directory(self, directory):
         if not os.path.exists(directory):
             print("Create directory {}".format(directory))
-            os.makedirs(directory)
+            os.makedirs(directory, exist_ok=True)
             self.counter['DIR_CREATE'] += 1
 
     # Given file name, move to the directory destination
@@ -51,8 +55,10 @@ class Writer:
             if dest_image.get_hash() != image.get_hash():
                 # We have a file conflict.  We'll need to kick this file out and try again or rename it
                 dest = "{}/{}".format(self.BASE_PROBLEM_DIR, image.filename)
+                self.counter['HASH_CONFLICT'] += 1
         if not os.path.exists(dest):
             print("File destination {} + {} -> {}".format(directory, image.filename, dest))
+            os.makedirs(os.path.dirname(dest), exist_ok=True)
             #os.rename(filename, dest)
             shutil.copyfile(image.filename, dest)
             shutil.copystat(image.filename, dest)

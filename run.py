@@ -8,6 +8,7 @@
 # get image meta data
 
 import os
+import re
 from image import Image
 from writer import Writer
 from collections import Counter
@@ -22,17 +23,30 @@ counting = ['FILES',
     'NOT_IMAGE', 
     'NO_IMAGE_INFO', 
     'TIME_FROM_PATH', 
-    'TIME_FROM_MOD'
+    'TIME_FROM_MOD',
+    'HASH_CONFLICT',
+    'SKIPPED'
     ]
 counter = Counter()
 writer = Writer(counter=counter)
+
+# If ends in trash, skip it
+def if_skip(name):
+    if re.search('\$folder\$$', name):
+        return True
+    return False
 
 for (dirpath, dirnames, filenames) in os.walk('/p.in/',followlinks=True):
     for name in filenames:
         full_filename = os.path.join(dirpath, name)
         #print("FILE -> ", full_filename)
+        if if_skip(name):
+            print("SKIP NAME ", name)
+            counter['SKIPPED'] += 1
+            continue
         img = Image(filename=full_filename, counter=counter)
         writer.process(img)
 
-for c in counting:
-    print(c, counter[c])
+print("\n-----")
+for i,v in counter.items():
+    print(i, v)
