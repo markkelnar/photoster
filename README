@@ -5,8 +5,8 @@
 # Run the script in the docker
 docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Drive/marks-laptop/pictures/:/p.in -v ~/pics/out:/p.out photoster 
 
-time docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Drive/marks-laptop/pictures/2016/09/:/p.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pictures/:/p.out photoster ./run.py
+docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Drive/marks-laptop/pictures/2016/09/:/p.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pictures/:/p.out photoster ./run.py
 
 # Can't write to mounted drive?
-It's mounted as read-only
+It's mounted as read-only on my mac
 https://www.seagate.com/support/downloads/item/ntfs-driver-for-mac-os-master-dl/

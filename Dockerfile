@@ -13,8 +13,6 @@ RUN cd /tmp \
 	&& cd .. \
 	&& rm -rf Image-ExifTool-${EXIFTOOL_VERSION}
 
-
-RUN pip install pillow
 RUN pip install pyexifinfo
 
 WORKDIR /workspace
