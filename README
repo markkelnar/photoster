@@ -2,15 +2,37 @@
 
 # Example run docker run -ti --rm -v ${PWD}/:/workspace/ -v ~/pics/in/:/p.in -v ~/pics/out:/p.out photoster ./run.py
 
-# Run the script in the docker
+# Run bash into docker and run stuff
 docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Drive/marks-laptop/pictures/:/p.in -v ~/pics/out:/p.out photoster 
 
-docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Drive/marks-laptop/pictures/2016/09/:/p.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pictures/:/p.out photoster ./run.py
+# To initiate the run script
+docker run -v ${PWD}/:/workspace/ -v /some/directory/:/p.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pictures/:/p.out photoster ./run.py
+
+# Run with 
+#  docker run -v ${PWD}/:/workspace/ -v ~/pics/in:/pics.in -v ~/pics/out:/pics.out photoster ./run.py
+
+# The -v are volumes (directories) that are mounted within the docker image as a volume
+# /pics.in and /pics.out are paths that the run.py app are looking for.  Those are how the names are 
+# mounted within the Docker image.  Use those.
+# The other names are directory names external to the Docker image.
+
+# For output to the Seagate mounted drive
+# docker run -v ${PWD}/:/workspace/ -v ~/pics/in:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
+
+
+## AWS cli
+# Pulling from S3 using AWS cli
+aws s3 sync s3://falken-storage/iPhoto/2014/ falken-storage/iPhoto/2014/ --dryrun
+
+# Pushing to S3 using AWS cli
+aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://from-laptop/pics/ --dryrun
+
 
 # Can't write to mounted drive?
 It's mounted as read-only on my mac
 https://www.seagate.com/support/downloads/item/ntfs-driver-for-mac-os-master-dl/
 
+# TODO
 # Pushing images to AWS ECR
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html
 
@@ -29,9 +51,3 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html
 
-
-# Pulling from S3 using AWS cli
-aws s3 sync s3://falken-storage/iPhoto/2014/ falken-storage/iPhoto/2014/ --dryrun
-
-# Pushing to S3 using AWS cli
-aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://from-laptop/pics/ --dryrun
