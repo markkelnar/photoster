@@ -36,7 +36,7 @@ def if_skip(name):
         return True
     return False
 
-for (dirpath, dirnames, filenames) in os.walk('/p.in/',followlinks=True):
+for (dirpath, dirnames, filenames) in os.walk('/pics.in/',followlinks=True):
     for name in filenames:
         full_filename = os.path.join(dirpath, name)
         #print("FILE -> ", full_filename)

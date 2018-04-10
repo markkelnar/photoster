@@ -7,7 +7,7 @@ import shutil
 from image import Image
 
 class Writer:
-    BASE_DIR_OUT = '/p.out/'
+    BASE_DIR_OUT = '/pics.out/'
     BASE_PROBLEM_DIR = BASE_DIR_OUT+'_problems/'
 
     hashes = {}

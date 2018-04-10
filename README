@@ -10,3 +10,21 @@ docker run -ti --rm -v ${PWD}/:/workspace/ -v /Volumes/Seagate\ Backup\ Plus\ Dr
 # Can't write to mounted drive?
 It's mounted as read-only on my mac
 https://www.seagate.com/support/downloads/item/ntfs-driver-for-mac-os-master-dl/
+
+# Pushing images to AWS ECR
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html
+
+aws ecr get-login --no-include-email
+docker login -u AWS -p ......
+cd develop/photoster/
+docker build -t photoster .
+docker tag photoster:latest {ID}.dkr.ecr.us-east-1.amazonaws.com/photoster:latest
+docker push {ID}.dkr.ecr.us-east-1.amazonaws.com/photoster:latest
+
+
+TODO
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazon-ecs.html
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazon-ecs.html#create-a-vpc
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
+https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
+https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html

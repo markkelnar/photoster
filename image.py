@@ -3,8 +3,6 @@
 # Get md5 hash of file contents
 # Use file writer class to write the file to destination based on date
 
-import PIL.Image
-from PIL.ExifTags import TAGS
 import datetime
 import hashlib
 import re
