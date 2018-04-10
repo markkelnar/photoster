@@ -76,6 +76,10 @@ class Image:
         if match:
             time = "{}:{}:{} 03:03:03".format(match.group(1), match.group(2), match.group(3))
             return time
+        match = re.search('(\d\d\d\d)\/(\d\d)', filename)
+        if match:
+            time = "{}:{}:01 03:03:03".format(match.group(1), match.group(2))
+            return time
         raise Exception('No time from path')
 
     @staticmethod

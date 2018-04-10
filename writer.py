@@ -34,10 +34,11 @@ class Writer:
         self.counter['HASH'] += 1
 
     # Given timestamp, determine the directory destination name
-    # Folder name format based on date: 2017/01/01
+    # Folder name format based on date: 2017/01/01 year/month/day
     @staticmethod
     def format_date_for_directory_name(d):
-        return d.strftime("%Y/%m/%d")
+        #return d.strftime("%Y/%m/%d")
+        return d.strftime("%Y/%m")
 
     # For the given timestamp, make sure the destination directory exists
     def create_directory(self, directory):

@@ -19,4 +19,4 @@ run:
 # The other names are directory names external to the Docker image.
 
 # For output to the Seagate mounted drive
-# docker run -v ${PWD}/:/workspace/ -v ~/pics/in:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/:/pics.out photoster ./run.py
+# docker run -v ${PWD}/:/workspace/ -v ~/pics/in:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py

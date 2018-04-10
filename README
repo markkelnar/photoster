@@ -28,3 +28,10 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/get-set-up-for-amazo
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html
+
+
+# Pulling from S3 using AWS cli
+aws s3 sync s3://falken-storage/iPhoto/2014/ falken-storage/iPhoto/2014/ --dryrun
+
+# Pushing to S3 using AWS cli
+aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://from-laptop/pics/ --dryrun
