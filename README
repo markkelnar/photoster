@@ -25,7 +25,7 @@ docker run -v ${PWD}/:/workspace/ -v /some/directory/:/p.in -v /Volumes/Seagate\
 aws s3 sync s3://falken-storage/iPhoto/2014/ falken-storage/iPhoto/2014/ --dryrun
 
 # Pushing to S3 using AWS cli
-aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://from-laptop/pics/ --dryrun
+aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://storage.kelnar/pics/ --dryrun
 
 
 # Can't write to mounted drive?
@@ -51,3 +51,14 @@ https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html
 https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html
 https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html
 
+
+## To clean up what I have in aws.  do this once.
+# Pull down images from from S3 to ~/pics/
+# Run photoster to Seagate volume
+# Sync from seagate volume to s3://storage.kelnar/pics/
+
+## Regular behavior
+# plug in phone and sync photos
+# Run photoster on iphotos dir to external drive of what was sync'd from phone
+# or, have an application that reacts to photos added to photos and automatically runs docker processor on it to seagate volume.
+# Sync from seagate volume to s3://storage.kelnar/pics
