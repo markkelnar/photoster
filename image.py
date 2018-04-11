@@ -72,11 +72,11 @@ class Image:
     # If can't get image file info, because it doesn't have it or it's a video file,
     # See if the file name has a date in the path, like DDDD/DD/DD or YYYY/MM/DD
     def get_time_from_path(self, filename):
-        match = re.search('(\d\d\d\d)\/(\d\d)\/(\d\d)', filename)
+        match = re.search('\/(\d\d\d\d)\/(\d\d)\/(\d\d)', filename)
         if match:
             time = "{}:{}:{} 03:03:03".format(match.group(1), match.group(2), match.group(3))
             return time
-        match = re.search('(\d\d\d\d)\/(\d\d)', filename)
+        match = re.search('\/(\d\d\d\d)\/(\d\d)', filename)
         if match:
             time = "{}:{}:01 03:03:03".format(match.group(1), match.group(2))
             return time

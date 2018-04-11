@@ -44,6 +44,7 @@ for (dirpath, dirnames, filenames) in os.walk('/pics.in/',followlinks=True):
             print("SKIP NAME ", name)
             counter['SKIPPED'] += 1
             continue
+        #print(full_filename)
         img = Image(filename=full_filename, counter=counter)
         writer.process(img)
 
