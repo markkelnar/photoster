@@ -62,7 +62,7 @@ https://docs.aws.amazon.com/AmazonECR/latest/userguide/ECR_on_ECS.html
 
 # Run photoster on iphotos dir to external drive of what was sync'd from phone
 # dir where photos get loaded in Photos app '~/Pictures/Photos Library.photoslibrary/Masters/'
-docker run -v ${PWD}/:/workspace/ -v '~/Pictures/Photos Library.photoslibrary/Masters/':/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
+cd ~/develop/photoster ; docker run -v ${PWD}/:/workspace/ -v /Users/mark.kelnar/Pictures/Photos\ Library.photoslibrary/Masters/:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
 
 # or, have an application that reacts to photos added to photos and automatically runs docker processor on it to seagate volume.
 
