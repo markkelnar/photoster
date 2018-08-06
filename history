@@ -1,0 +1,34 @@
+April 9 docker run -v ${PWD}/:/workspace/ -v ~/pics/falken-storage/iPhoto/2013/04/05/:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/:/pics.out photoster ./run.py
+
+April 11
+aws s3 sync s3://falken-storage/iPhoto/2014/ ~/pics/falken-storage/iPhoto/2014/ --dryrun
+aws s3 sync s3://falken-storage/iPhoto/2013/ ~/pics/falken-storage/iPhoto/2013/ --dryrun
+aws s3 ls s3://falken-storage/iPhoto/
+                           PRE 2013/
+                           PRE 2014/
+                           PRE 2015/
+                           PRE 2016/
+                           PRE 2017/
+aws s3 sync s3://falken-storage/iPhoto/2015/ ~/pics/falken-storage/iPhoto/2015/
+
+# Some 30Gb of images I've previously processed
+docker run -v ${PWD}/:/workspace/ -v ~/pics/out/:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics:/pics.out photoster ./run.py
+
+# Sync to new aws bucket 
+aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://storage.kelnar/pics/
+
+April 13
+Removed falken-storage/iPhotos/ locally cause I'm done with it.
+Soon, remove that from s3.
+
+Sync down media folder
+aws s3 sync s3://falken-storage/media/ ~/pics/falken-storage/media/
+Didn't sync all of it cause over 100G of it was good enough locally
+I'll run photoster to see how it organizes it, then get the rest.
+
+April 26
+# Process iphotos to drive
+docker run -v ${PWD}/:/workspace/ -v /Users/mark.kelnar/Pictures/Photos\ Library.photoslibrary/Masters/:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
+# Sync drive to s3
+aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://storage.kelnar/pics/
+
