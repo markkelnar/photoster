@@ -2,11 +2,14 @@
 
 # The .phar file we build:
 PROJECT := photoster
-DOCKER_IMMAGE := photoster
+DOCKER_IMAGE := photoster
 
 build:
-	docker build ${DOCKER_IMAGE} --file "Dockerfile" .
+	docker build -t ${DOCKER_IMAGE} --file "Dockerfile" .
+
+shell:
+	docker run -it -v ${PWD}/:/workspace/ ${DOCKER_IMAGE} /bin/bash
 
 run:
-	docker run -it --rm --name ${DOCKER_NAME} ./run.py
+	docker run -v ${PWD}/:/workspace/ -v /Users/mark.kelnar/Pictures/Photos\ Library.photoslibrary/Masters/:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
 

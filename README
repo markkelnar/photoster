@@ -19,6 +19,8 @@ docker run -v ${PWD}/:/workspace/ -v /some/directory/:/p.in -v /Volumes/Seagate\
 # For output to the Seagate mounted drive
 # docker run -v ${PWD}/:/workspace/ -v ~/pics/in:/pics.in -v /Volumes/Seagate\ Backup\ Plus\ Drive/pics/:/pics.out photoster ./run.py
 
+# AWS cli tool
+https://docs.aws.amazon.com/cli/latest/userguide/installing.html
 
 ## AWS cli
 # Pulling from S3 using AWS cli
