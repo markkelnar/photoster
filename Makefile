@@ -1,4 +1,4 @@
-.PHONY: all clean clean_deb clean_composer clean_all build require_box require_composer require_fpm deb
+.PHONY: all clean build shell run
 
 # The .phar file we build:
 PROJECT := photoster
