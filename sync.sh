@@ -11,5 +11,5 @@ rsync -av "$PHOTO_LIBRARY/" "$WORKING_DIR/"
 docker run -v ${PWD}/:/workspace/ -v "$WORKING_DIR":/pics.in -v "$REMOVEABLE_STORAGE_DIR":/pics.out photoster ./run.py
 
 # Sync drive to s3 (cloud, offsite)
-#aws s3 sync "$REMOVEABLE_STORAGE_DIR" s3://storage.kelnar/pics/
+aws s3 sync "$REMOVEABLE_STORAGE_DIR" s3://storage.kelnar/pics/
 
