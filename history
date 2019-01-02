@@ -32,3 +32,7 @@ docker run -v ${PWD}/:/workspace/ -v /Users/mark.kelnar/Pictures/Photos\ Library
 # Sync drive to s3
 aws s3 sync /Volumes/Seagate\ Backup\ Plus\ Drive/pics/ s3://storage.kelnar/pics/
 
+Jan 2 2019
+Add rsync to cache/ cause mac Photo Library was no longer accessible within the docker image.
+rsync -av ~/Pictures/Photos\ Library.photoslibrary/Masters/ cache/
+Did some research, but decided to sync files out first.

@@ -27,6 +27,7 @@ counting = ['FILES',
     'HASH_CONFLICT',
     'SKIPPED'
     ]
+print("TRACE")
 counter = Counter()
 writer = Writer(counter=counter)
 
@@ -37,7 +38,9 @@ def if_skip(name):
     return False
 
 for (dirpath, dirnames, filenames) in os.walk('/pics.in/',followlinks=True):
+    print(dirpath, dirnames, filenames)
     for name in filenames:
+        print(name)
         full_filename = os.path.join(dirpath, name)
         #print("FILE -> ", full_filename)
         if if_skip(name):
