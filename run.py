@@ -13,7 +13,7 @@ import sys
 from library.image import Image
 from library.writer import Writer
 
-print("Process images")
+#print("Process images")
 
 counter = Counter()
 writer = Writer(counter=counter)
@@ -25,7 +25,7 @@ def if_skip(name):
     return False
 
 name=sys.argv[1]
-print("FILE -> ", name)
+#print("FILE -> ", name)
 if if_skip(name):
     print("SKIP NAME ", name)
     counter['SKIPPED'] += 1
@@ -33,6 +33,6 @@ print(name)
 img = Image(filename=name, counter=counter)
 writer.process(img)
 
-print("\n-----")
-for i,v in counter.items():
-    print(i, v)
+#print("\n-----")
+#for i,v in counter.items():
+#    print(i, v)

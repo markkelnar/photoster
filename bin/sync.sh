@@ -4,11 +4,10 @@
 
 echo `date`
 
-OUT_DIR=/Users/mark.kelnar/Desktop/out/
-REMOVEABLE_STORAGE_DIR=/Volumes/Seagate\ Backup\ Plus\ Drive/pics
+FROM_DIR=/Users/mark.kelnar/Desktop/photoster-process/processed-photos/
 
 # sync that output folder to the external drive
-rsync -av "$OUT_DIR" "$REMOVEABLE_STORAGE_DIR"
+rsync -av "$FROM_DIR" /Volumes/Seagate\ Backup\ Plus\ Drive/pics
 
 # Sync processed photo to s3 (cloud, offsite)
-#aws s3 sync "$OUTDIR" s3://storage.kelnar/pics/
+aws s3 sync "$FROM_DIR" s3://storage.kelnar/pics/
