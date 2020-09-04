@@ -36,3 +36,13 @@ Jan 2 2019
 Add rsync to cache/ cause mac Photo Library was no longer accessible within the docker image.
 rsync -av ~/Pictures/Photos\ Library.photoslibrary/Masters/ cache/
 Did some research, but decided to sync files out first.
+
+Sept 3 2020
+A folder that has an action tied to it.
+when photos are dropped in that folder, the action script is run
+The script:
+  renames/copies accordingly
+  syncs to the attached external harddrive
+  syncs to aws s3
+So, after importing files from device, can copy, drag then to this folder and it'll run.
+
