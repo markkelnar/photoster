@@ -58,6 +58,11 @@ class Writer:
                 # We have a file conflict.  We'll need to kick this file out and try again or rename it
                 dest = "{}/{}".format(self.BASE_PROBLEM_DIR, image.filename)
                 self.counter['HASH_CONFLICT'] += 1
+                print(f"Problem file name conflict and diff hash  {image.filename} -> {dest_image.filename}")
+                # Use file hash value as the name
+                dest = f"{directory}/{image.get_hash()}.{image.get_file_extension(filename=image.filename)}"
+                print(f"NEW NAME {dest}")
+                shutil.move(image.filename, dest)
             else:
                 print(f"Same file already exists at {dest_image.filename}. Delete {image.filename}")
                 os.remove(image.filename)

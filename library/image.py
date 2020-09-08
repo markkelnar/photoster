@@ -86,3 +86,6 @@ class Image:
     def get_time_from_mod_time(filename):
         time = os.path.getmtime(filename)
         return datetime.datetime.utcfromtimestamp(time).strftime('%Y:%m:%d %H:%M:%S')
+
+    def get_file_extension(self, filename):
+        return pyexifinfo.fileType(filename).lower()
