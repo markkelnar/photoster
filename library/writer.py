@@ -4,13 +4,11 @@
 import datetime
 import os
 import shutil
-from image import Image
+from .image import Image
 
 class Writer:
     BASE_DIR_OUT = '/pics.out/'
     BASE_PROBLEM_DIR = BASE_DIR_OUT+'_problems/'
-
-    hashes = {}
 
     recent_date = ''
 
@@ -27,11 +25,8 @@ class Writer:
         self.recent_date = image_date
         image_dir = self.format_date_for_directory_name(image_date)
         image_dir = self.BASE_DIR_OUT + image_dir
-        #print("Directory {}".format(image_dir))
-        rc = self.do_file_hash(image)
         self.create_directory(image_dir)
         self.move(image_dir, image)
-        self.counter['HASH'] += 1
 
     # Given timestamp, determine the directory destination name
     # Folder name format based on date: 2017/01/01 year/month/day
@@ -50,26 +45,24 @@ class Writer:
     # Given file name, move to the directory destination
     def move(self, directory, image):
         dest = "{}/{}".format(directory, os.path.basename(image.filename))
-        # If dest exists, does hash match this file?
-        if os.path.exists(dest):
+        if not os.path.exists(dest):
+            print("File destination {} + {} -> {}".format(directory, image.filename, dest))
+            self.create_directory(directory)
+            shutil.move(image.filename, dest)
+            #shutil.copyfile(image.filename, dest)
+            #shutil.copystat(image.filename, dest)
+            self.counter['COPY'] += 1
+        else:
             dest_image = Image(counter=self.counter, filename=dest)
             if dest_image.get_hash() != image.get_hash():
                 # We have a file conflict.  We'll need to kick this file out and try again or rename it
                 dest = "{}/{}".format(self.BASE_PROBLEM_DIR, image.filename)
                 self.counter['HASH_CONFLICT'] += 1
-        if not os.path.exists(dest):
-            print("File destination {} + {} -> {}".format(directory, image.filename, dest))
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            #os.rename(filename, dest)
-            shutil.copyfile(image.filename, dest)
-            shutil.copystat(image.filename, dest)
-            self.counter['COPY'] += 1
-
-    # Does the file hash exist in our list of files?
-    def do_file_hash(self, image):
-        # look for the hash in our list of hashes
-        h = image.get_hash()
-        if h in self.hashes:
-            return True
-        self.hashes[h] = image.filename
-        return False
+                print(f"Problem file name conflict and diff hash  {image.filename} -> {dest_image.filename}")
+                # Use file hash value as the name
+                dest = f"{directory}/{image.get_hash()}.{image.get_file_extension(filename=image.filename)}"
+                print(f"NEW NAME {dest}")
+                shutil.move(image.filename, dest)
+            else:
+                print(f"Same file already exists at {dest_image.filename}. Delete {image.filename}")
+                os.remove(image.filename)
