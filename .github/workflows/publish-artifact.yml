@@ -16,6 +16,6 @@ jobs:
         with:
           files: |
             README
-            Hello.txt
+            tmp/schema.graphql
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
