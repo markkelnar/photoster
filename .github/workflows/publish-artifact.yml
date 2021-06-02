@@ -14,8 +14,8 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          files: 
-            - README
-            - Hello.txt
+          files: |
+            README
+            Hello.txt
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
