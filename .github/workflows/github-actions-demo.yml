@@ -17,7 +17,7 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
       - name: Get Latest tag
-      - uses: actions-ecosystem/action-get-latest-tag@v1
+        uses: actions-ecosystem/action-get-latest-tag@v1
         id: get-latest-tag
 
       - name: Get Previous Released Schema
