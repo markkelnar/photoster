@@ -22,13 +22,12 @@ jobs:
 
       - name: Get Previous Released Schema
         id: previous_schema
-        run: |
-          curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L
+        run: echo "::set-output name=schema::$(curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L)
 
       - name: Test Schema for breaking changes
         run: |
           echo "Next up things"
-          echo "Tag ${{ steps.get-latet-tag.outputs.tag }}"
+          echo "Tag ${{ steps.get-latest-tag.outputs.tag }}"
           echo "Schema ${{ steps.previous_schema.outputs.schema }}"
           # https://github.com/marketplace/actions/graphql-inspector
           #graphql-inspector diff https://api.com/graphql schema.graphql
