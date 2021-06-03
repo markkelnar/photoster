@@ -21,7 +21,7 @@ jobs:
         id: get-latest-tag
 
       - name: Get Previous Released Schema
-        run: curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L  --output /tmp/latest.schema
+        run: curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L  --output /tmp/old.schema
 
       - name: Install Schema Inspector
         run: npm install --global @graphql-inspector/cli graphql
@@ -31,15 +31,9 @@ jobs:
           echo "Next up things"
           echo "Tag ${{ steps.get-latest-tag.outputs.tag }}"
           # https://github.com/marketplace/actions/graphql-inspector
-          graphql-inspector diff /tmp/latest.schema tmp/schema.graphql
+          graphql-inspector diff /tmp/old.schema tmp/schema.graphql
           # This schema and previous release schema
           #something-runs.js /tmp/schema.graphql || true
           #FindBreakingChanges::findBreakingChanges($oldSchema, $newSchema)
           #use GraphQL\Utils\FindBreakingChanges;
           #FindBreakingChanges::findDangerousChanges($oldSchema, $newSchema));
-
-      - name: Test Schema for breaking changes
-        uses: kamilkisiela/graphql-inspector@master
-        with:
-          schema: 'tmp/schema.graphql'
-          endpoint: https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql
