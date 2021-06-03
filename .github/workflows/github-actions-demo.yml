@@ -1,7 +1,7 @@
 name: GitHub Actions Demo
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Actions-When-Push:
     runs-on: ubuntu-latest
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
@@ -23,13 +23,13 @@ jobs:
       - name: Get Previous Released Schema
         id: previous_schema
         run: |
-          curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.3/schema.graphql' -L
+          curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L
 
       - name: Test Schema for breaking changes
         run: |
           echo "Next up things"
-          echo "Tag {{ steps.get-latet-tag.outputs.tag }}"
-          echo "Schema {{ steps.previous_schema.outputs.schema }}"
+          echo "Tag ${{ steps.get-latet-tag.outputs.tag }}"
+          echo "Schema ${{ steps.previous_schema.outputs.schema }}"
           # https://github.com/marketplace/actions/graphql-inspector
           #graphql-inspector diff https://api.com/graphql schema.graphql
           #graphql-inspector diff old.schema schema.graphql
