@@ -24,7 +24,7 @@ jobs:
         run: curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L  --output /tmp/latest.schema
 
       - name: Install Schema Inspector
-        run: npm install graphql-schema-linter
+        run: npm install --global @graphql-inspector/ci
 
       - name: Print some info
         run: |
