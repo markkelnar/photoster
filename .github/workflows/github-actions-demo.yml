@@ -23,11 +23,10 @@ jobs:
       - name: Get Previous Released Schema
         run: curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L  --output /tmp/latest.schema
 
-      - name: Test Schema for breaking changes
+      - name: Print some info
         run: |
           echo "Next up things"
           echo "Tag ${{ steps.get-latest-tag.outputs.tag }}"
-          cat /tmp/latest.schema
           # https://github.com/marketplace/actions/graphql-inspector
           graphql-inspector diff /tmp/latest.schema tmp/schema.graphql
           # This schema and previous release schema
@@ -35,3 +34,12 @@ jobs:
           #FindBreakingChanges::findBreakingChanges($oldSchema, $newSchema)
           #use GraphQL\Utils\FindBreakingChanges;
           #FindBreakingChanges::findDangerousChanges($oldSchema, $newSchema));
+
+      - name: Install Schema Inspector
+        run: npm install graphql-schema-linter
+
+      - name: Test Schema for breaking changes
+        uses: kamilkisiela/graphql-inspector@master
+        with:
+          schema: 'tmp/schema.graphql'
+          endpoint: https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql
