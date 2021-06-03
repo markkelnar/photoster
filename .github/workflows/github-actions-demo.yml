@@ -22,7 +22,7 @@ jobs:
 
       - name: Get Previous Released Schema
         id: previous_schema
-        run: echo "::set-output name=schema::$(curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L)
+        run: echo "::set-output name=schema::$(curl 'https://github.com/wp-graphql/wp-graphql/releases/download/v1.3.9/schema.graphql' -L)"
 
       - name: Test Schema for breaking changes
         run: |
