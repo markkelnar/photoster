@@ -29,8 +29,7 @@ jobs:
           echo "Tag ${{ steps.get-latest-tag.outputs.tag }}"
           cat /tmp/latest.schema
           # https://github.com/marketplace/actions/graphql-inspector
-          #graphql-inspector diff https://api.com/graphql schema.graphql
-          #graphql-inspector diff old.schema schema.graphql
+          graphql-inspector diff /tmp/latest.schema tmp/schema.graphql
           # This schema and previous release schema
           #something-runs.js /tmp/schema.graphql || true
           #FindBreakingChanges::findBreakingChanges($oldSchema, $newSchema)
