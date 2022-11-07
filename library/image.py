@@ -8,8 +8,7 @@ import hashlib
 import re
 import os
 
-import pyexifinfo
-
+from exiftool import ExifToolHelper
 
 class Image:
     BLOCKSIZE = 65536
@@ -17,6 +16,8 @@ class Image:
     DEFAULT_DATE_IMAGE = '1951:01:01 02:02:02'
 
     hash = ''
+
+    exif = None
 
     def __init__(self, counter, filename):
         self.counter = counter
@@ -43,13 +44,19 @@ class Image:
         return self.format_create_date(time=time)
 
     def get_date_from_exif(self, fn):
-        self.counter['FILE_TYPE_'+pyexifinfo.fileType(fn)] += 1
-        d = pyexifinfo.get_json(fn)[0]
+        with ExifToolHelper() as et:
+            # for d in et.get_metadata(fn):
+            #     for k, v in d.items():
+            #         print(f"Dict: {k} = {v}")
+            for d in et.get_tags(fn, tags=["EXIF:DateTimeOriginal", "QuickTime:CreateDate", "File:FileType", "File:FileTypeExtension"]):
+                self.exif = d
+        # print(self.exif)
+        self.counter['FILE_TYPE_' + self.exif["File:FileType"]] += 1
         # 'EXIF:DateTimeOriginal': '2016:09:06 19:34:07'
         # 'QuickTime:CreateDate': '2016:09:05 13:11:08'
-        if 'EXIF:DateTimeOriginal' in d:
+        if 'EXIF:DateTimeOriginal' in self.exif:
             return d['EXIF:DateTimeOriginal']
-        if 'QuickTime:CreateDate' in d:
+        if 'QuickTime:CreateDate' in self.exif:
             return d['QuickTime:CreateDate']
 
     # @param time '2016:09:03 17:47:51'
@@ -88,4 +95,4 @@ class Image:
         return datetime.datetime.utcfromtimestamp(time).strftime('%Y:%m:%d %H:%M:%S')
 
     def get_file_extension(self, filename):
-        return pyexifinfo.fileType(filename).lower()
+        return self.exif["File:FileType"].lower()

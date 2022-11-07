@@ -25,6 +25,7 @@ class Writer:
         self.recent_date = image_date
         image_dir = self.format_date_for_directory_name(image_date)
         image_dir = self.BASE_DIR_OUT + image_dir
+        # print(f"{image_date}  {image_dir}")
         self.create_directory(image_dir)
         self.move(image_dir, image)
 

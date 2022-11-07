@@ -1,10 +1,10 @@
 FROM python:3
 
 # Perl and exiftool
-# borrowed from https://github.com/Miljar/exiftool-docker
-ENV EXIFTOOL_VERSION=10.20
+# borrowed from https://exiftool.org/install.html
+ENV EXIFTOOL_VERSION=12.49
 RUN cd /tmp \
-	&& wget http://www.sno.phy.queensu.ca/~phil/exiftool/Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz \
+	&& wget https://exiftool.org/Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz \
 	&& tar -zxvf Image-ExifTool-${EXIFTOOL_VERSION}.tar.gz \
 	&& cd Image-ExifTool-${EXIFTOOL_VERSION} \
 	&& perl Makefile.PL \
@@ -13,6 +13,6 @@ RUN cd /tmp \
 	&& cd .. \
 	&& rm -rf Image-ExifTool-${EXIFTOOL_VERSION}
 
-RUN pip install pyexifinfo
+RUN pip install pyexiftool
 
 WORKDIR /workspace
