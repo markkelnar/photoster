@@ -32,7 +32,7 @@ class Image:
             # Not an image
             self.counter['NOT_IMAGE'] += 1
         except Exception as e:
-            self.counter['NO_IMAGE_INFO'] += 1            
+            self.counter['NO_IMAGE_INFO'] += 1
 
         try:
             if not time:
@@ -48,21 +48,26 @@ class Image:
             # for d in et.get_metadata(fn):
             #     for k, v in d.items():
             #         print(f"Dict: {k} = {v}")
-            for d in et.get_tags(fn, tags=["EXIF:DateTimeOriginal", "QuickTime:CreateDate", "File:FileType", "File:FileTypeExtension"]):
+            for d in et.get_tags(fn, tags=["EXIF:DateTimeOriginal", "QuickTime:CreationDate", "File:FileType", "File:FileTypeExtension"]):
                 self.exif = d
         # print(self.exif)
         self.counter['FILE_TYPE_' + self.exif["File:FileType"]] += 1
         # 'EXIF:DateTimeOriginal': '2016:09:06 19:34:07'
-        # 'QuickTime:CreateDate': '2016:09:05 13:11:08'
+        # 'QuickTime:CreationDate': '2016:09:05 13:11:08'
         if 'EXIF:DateTimeOriginal' in self.exif:
             return d['EXIF:DateTimeOriginal']
-        if 'QuickTime:CreateDate' in self.exif:
-            return d['QuickTime:CreateDate']
+        if 'QuickTime:CreationDate' in self.exif:
+            return d['QuickTime:CreationDate']
 
-    # @param time '2016:09:03 17:47:51'
+    # @param time '2016:09:03 17:47:51-05:00'
     @staticmethod
     def format_create_date(time):
-        return datetime.datetime.strptime(time, "%Y:%m:%d %H:%M:%S")
+        dt = None
+        try:
+            dt = datetime.datetime.strptime(time, "%Y:%m:%d %H:%M:%S")
+        except ValueError as e:
+            dt = datetime.datetime.strptime(time, "%Y:%m:%d %H:%M:%S%z")
+        return dt
 
     def get_hash(self):
         if self.hash:

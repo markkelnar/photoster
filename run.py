@@ -25,7 +25,7 @@ def if_skip(name):
     return False
 
 name=sys.argv[1]
-#print("FILE -> ", name)
+# print("FILE -> ", name)
 if if_skip(name):
     print("SKIP NAME ", name)
     counter['SKIPPED'] += 1
